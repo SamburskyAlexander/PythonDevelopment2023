@@ -2,8 +2,10 @@ import sys
 import argparse
 from cowsay import cowsay
 
-
 # TODO: add -l option
+
+OPTIONALS = set("bdgpstwy")
+
 
 def main(args):
     line_list = []
@@ -11,12 +13,16 @@ def main(args):
         line_list.append(input_line.strip())
     message = "\n".join(line_list)
 
-    # TODO: add set value of preset
+    preset = None
+    for option, value in args._get_kwargs():
+        if option in OPTIONALS and value:
+            preset = option
+            break
 
     print(cowsay(
         message=message,
         cow=args.f,
-        preset=None,  # use default value for now
+        preset=preset,
         eyes=args.e,
         tongue=args.T,
         width=args.W,
@@ -32,6 +38,9 @@ if __name__ == '__main__':
     parser.add_argument("-n", action="store_true", help="arbitrary whitespaces")
     parser.add_argument("-T", type=str, default='  ', help="tongue")
     parser.add_argument("-W", type=int, default=40, help="message width")
+
+    for option in OPTIONALS:
+        parser.add_argument(f"-{option}", action="store_true")
 
     args = parser.parse_args()
 
