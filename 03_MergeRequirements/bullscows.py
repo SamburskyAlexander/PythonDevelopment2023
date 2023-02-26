@@ -1,5 +1,7 @@
 import os
 import random
+import argparse
+import urllib.request
 
 
 def bullscows(guess: str, secret: str) -> (int, int):
@@ -42,7 +44,7 @@ def ask(prompt: str, valid: list[str] = None) -> str:
     while line not in valid:
         print("Некорректное слово, должно быть одним из", valid)
         line = input()
-        
+
     return line
 
 
@@ -51,4 +53,26 @@ def inform(format_string: str, bulls: int, cows: int) -> None:
 
 
 if __name__ == '__main__':
-    pass
+    parser = argparse.ArgumentParser(description='bullscows game')
+
+    parser.add_argument("valid_words_src", type=str, help="file or URL with valid words")
+    parser.add_argument("length", type=int, default=5, help="length of valid words")
+
+    args = parser.parse_args()
+
+    valid_words = []
+    if os.path.exists(args.valid_words_src):
+        with open(args.valid_words_src) as f:
+            for line in f:
+                line = line.strip()
+                if len(line) == args.length:
+                    valid_words += [line.strip()]
+    else:
+        with urllib.request.urlopen(args.valid_words_src) as f:
+            for line in f:
+                line = line.decode().strip()
+                if len(line) == args.length:
+                    valid_words += [line.strip()]
+
+    tries = gameplay(ask, inform, valid_words)
+    print(f"Игра завершена. Число попыток: " + str(tries))
