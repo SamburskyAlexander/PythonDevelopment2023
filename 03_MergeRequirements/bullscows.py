@@ -35,15 +35,12 @@ def gameplay(ask: callable, inform: callable, words: list[str]) -> int:
 
 
 def ask(prompt: str, valid: list[str] = None) -> str:
-    print(prompt)
-
-    line = input()
+    line = input(prompt)
     if valid is None:
         return line
 
     while line not in valid:
-        print("Некорректное слово, должно быть одним из", valid)
-        line = input()
+        line = input(prompt)
 
     return line
 
