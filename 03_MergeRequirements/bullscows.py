@@ -2,7 +2,7 @@ import os
 import random
 import argparse
 import urllib.request
-from cowsay import cowsay, get_random_cow
+from cowsay import cowsay, get_random_cow, read_dot_cow
 
 
 def bullscows(guess: str, secret: str) -> (int, int):
@@ -36,7 +36,9 @@ def gameplay(ask: callable, inform: callable, words: list[str]) -> int:
 
 
 def ask(prompt: str, valid: list[str] = None) -> str:
-    cow_prompt = cowsay(prompt, cow=get_random_cow()) + '\n'
+    with open('./mycow.cow') as f:
+        cow = read_dot_cow(f)
+    cow_prompt = cowsay(prompt, cowfile=cow) + '\n'
     line = input(cow_prompt)
     if valid is None:
         return line

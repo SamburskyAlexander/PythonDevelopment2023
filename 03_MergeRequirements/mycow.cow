@@ -1,0 +1,14 @@
+##
+## My custom cow
+##
+$the_cow = <<EOC;
+     $thoughts
+      $thoughts
+        ?__?
+       /(OO)\ /===\    
+        (vv)==|====\___
+            \==|====__ )\__/  
+             |    | W |
+            _|   _| _||   
+
+EOC
